@@ -1,5 +1,5 @@
 use ray_tracing::color::write_color;
-use ray_tracing::material::{Lambertian, Metal};
+use ray_tracing::material::{Dielectric, Lambertian, Metal};
 use ray_tracing::ray::Ray;
 use ray_tracing::rtweekend::random_double;
 use ray_tracing::{
@@ -24,15 +24,12 @@ fn main() {
         albedo: color![0.8, 0.8, 0.0],
     }));
     let material_center = Rc::new(RefCell::new(Lambertian {
-        albedo: color![0.7, 0.3, 0.3],
+        albedo: color![0.1, 0.2, 0.5],
     }));
-    let material_left = Rc::new(RefCell::new(Metal {
-        albedo: color![0.8, 0.8, 0.8],
-        fuzz: 0.3,
-    }));
+    let material_left = Rc::new(RefCell::new(Dielectric { ir: 1.5 }));
     let material_right = Rc::new(RefCell::new(Metal {
         albedo: color![0.8, 0.6, 0.2],
-        fuzz: 1.0,
+        fuzz: 0.0,
     }));
 
     world.add(Rc::new(RefCell::new(Sphere {
@@ -48,6 +45,11 @@ fn main() {
     world.add(Rc::new(RefCell::new(Sphere {
         center: point3![-1.0, 0.0, -1.0],
         radius: 0.5,
+        mat_ptr: Some(material_left.clone()),
+    })));
+    world.add(Rc::new(RefCell::new(Sphere {
+        center: point3![-1.0, 0.0, -1.0],
+        radius: -0.4,
         mat_ptr: Some(material_left.clone()),
     })));
     world.add(Rc::new(RefCell::new(Sphere {
