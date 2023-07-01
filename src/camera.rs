@@ -1,5 +1,5 @@
 use crate::ray::Ray;
-use crate::rtweekend::degrees_to_radians;
+use crate::rtweekend::{degrees_to_radians, random_in_unit_disk};
 use crate::{Point3, Vec3};
 
 pub struct Camera {
@@ -7,6 +7,10 @@ pub struct Camera {
     pub lower_left_corner: Point3,
     pub horizontal: Vec3,
     pub vertical: Vec3,
+    pub u: Vec3, // horizontal
+    pub v: Vec3, // vertical
+    pub w: Vec3, // depth
+    pub lens_radius: f64,
 }
 
 impl Camera {
@@ -15,7 +19,15 @@ impl Camera {
     /// vup: view up vector
     /// vfov: vertical field-of-view in degrees
     /// aspect_ration: width / height
-    pub fn new(lookfrom: Point3, lookat: Point3, vup: Vec3, vfov: f64, aspect_ratio: f64) -> Self {
+    pub fn new(
+        lookfrom: Point3,
+        lookat: Point3,
+        vup: Vec3,
+        vfov: f64,
+        aspect_ratio: f64,
+        aperture: f64,
+        focus_dist: f64,
+    ) -> Self {
         let theta = degrees_to_radians(vfov);
         let h = (theta / 2.0).tan();
         let viewport_height = 2.0 * h;
@@ -26,23 +38,31 @@ impl Camera {
         let v = w.cross(&u);
 
         let origin = lookfrom;
-        let horizontal = viewport_width * u;
-        let vertical = viewport_height * v;
-        let lower_left_corner = origin - horizontal / 2.0 - vertical / 2.0 - w;
+        let horizontal = focus_dist * viewport_width * u;
+        let vertical = focus_dist * viewport_height * v;
+        let lower_left_corner = origin - horizontal / 2.0 - vertical / 2.0 - focus_dist * w;
 
+        let lens_radius = aperture / 2.0;
         Camera {
             origin: origin.clone(),
             lower_left_corner,
             horizontal,
             vertical,
+            u,
+            v,
+            w,
+            lens_radius,
         }
     }
 
     pub fn get_ray(&self, s: f64, t: f64) -> Ray {
+        let rd = self.lens_radius * random_in_unit_disk();
+        let offset = self.u * rd.x + self.v * rd.y;
         Ray {
-            origin: self.origin,
+            origin: self.origin + offset,
             direction: self.lower_left_corner + s * self.horizontal + t * self.vertical
-                - self.origin,
+                - self.origin
+                - offset,
         }
     }
 }

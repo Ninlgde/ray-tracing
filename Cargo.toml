@@ -7,6 +7,10 @@ edition = "2021"
 name = "ppm_main"
 path = "src/ppm_main.rs"
 
+[[bin]]
+name = "final_render"
+path = "src/final_render_main.rs"
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]

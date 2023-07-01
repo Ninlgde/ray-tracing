@@ -59,12 +59,18 @@ fn main() {
     })));
 
     // Camera
+    let lookfrom = point3![3, 3, 2];
+    let lookat = point3![0, 0, -1];
+    let vup = vec3![0, 1, 0];
+    let dist_to_focus = (lookfrom - lookat).length();
     let camera = Camera::new(
-        point3![-2, 2, 1],
-        point3![0, 0, -1],
-        vec3![0, 1, 0],
-        20.0,
+        lookfrom,
+        lookat,
+        vup,
+        40.0,
         ASPECT_RATIO,
+        3.0,
+        dist_to_focus,
     );
 
     let mut os = stdout();
