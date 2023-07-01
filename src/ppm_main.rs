@@ -59,7 +59,13 @@ fn main() {
     })));
 
     // Camera
-    let camera = Camera::new();
+    let camera = Camera::new(
+        point3![-2, 2, 1],
+        point3![0, 0, -1],
+        vec3![0, 1, 0],
+        20.0,
+        ASPECT_RATIO,
+    );
 
     let mut os = stdout();
 
