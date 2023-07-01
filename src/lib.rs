@@ -3,6 +3,7 @@ pub mod color;
 mod hittable;
 mod hittable_list;
 mod macros;
+mod material;
 pub mod ray;
 pub mod rtweekend;
 mod sphere;
@@ -15,6 +16,8 @@ pub type Point3 = Vec3;
 pub use hittable::HitRecord;
 pub use hittable::Hittable;
 pub use hittable_list::HittableList;
+
+pub use material::Material;
 
 pub use sphere::Sphere;
 

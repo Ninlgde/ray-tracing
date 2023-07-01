@@ -1,10 +1,14 @@
+use crate::material::Material;
 use crate::ray::Ray;
 use crate::{point3, vec3, Point3, Vec3};
+use std::cell::RefCell;
+use std::rc::Rc;
 
 #[derive(Debug, Clone, Copy)]
 pub struct HitRecord {
     pub p: Point3,
     pub normal: Vec3,
+    pub mat_ptr: Option<Rc<RefCell<dyn Material>>>,
     pub t: f64,
     pub front_face: bool,
 }
@@ -17,6 +21,7 @@ impl HitRecord {
         HitRecord {
             p: point3![0.0, 0.0, 0.0],
             normal: vec3![0.0, 0.0, 0.0],
+            mat_ptr: None,
             t: 0.0,
             front_face: false,
         }
