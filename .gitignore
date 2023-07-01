@@ -1,6 +1,7 @@
 # rust 生成文件
 /target
 Cargo.lock
+*/target
 
 # 日志文件
 # *表示当前路径下的任意字符
