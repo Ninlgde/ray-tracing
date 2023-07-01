@@ -6,6 +6,12 @@ pub struct Ray {
 }
 
 impl Ray {
+    pub fn new0() -> Self {
+        Ray {
+            origin: Point3::new0(),
+            direction: Point3::new0(),
+        }
+    }
     pub fn new(origin: &Point3, direction: &Point3) -> Self
     where
         Self: Sized,

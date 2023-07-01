@@ -1,4 +1,5 @@
 use ray_tracing::color::write_color;
+use ray_tracing::material::{Lambertian, Metal};
 use ray_tracing::ray::Ray;
 use ray_tracing::rtweekend::random_double;
 use ray_tracing::{
@@ -18,13 +19,39 @@ fn main() {
 
     // World
     let mut world = HittableList::new();
+
+    let material_ground = Rc::new(RefCell::new(Lambertian {
+        albedo: color![0.8, 0.8, 0.0],
+    }));
+    let material_center = Rc::new(RefCell::new(Lambertian {
+        albedo: color![0.7, 0.3, 0.3],
+    }));
+    let material_left = Rc::new(RefCell::new(Metal {
+        albedo: color![0.8, 0.8, 0.8],
+    }));
+    let material_right = Rc::new(RefCell::new(Metal {
+        albedo: color![0.8, 0.6, 0.2],
+    }));
+
     world.add(Rc::new(RefCell::new(Sphere {
         center: point3![0.0, 0.0, -1.0],
         radius: 0.5,
+        mat_ptr: Some(material_center.clone()),
     })));
     world.add(Rc::new(RefCell::new(Sphere {
         center: point3![0.0, -100.5, -1.0],
         radius: 100.0,
+        mat_ptr: Some(material_ground.clone()),
+    })));
+    world.add(Rc::new(RefCell::new(Sphere {
+        center: point3![-1.0, 0.0, -1.0],
+        radius: 0.5,
+        mat_ptr: Some(material_left.clone()),
+    })));
+    world.add(Rc::new(RefCell::new(Sphere {
+        center: point3![1.0, 0.0, -1.0],
+        radius: 0.5,
+        mat_ptr: Some(material_right.clone()),
     })));
 
     // Camera
@@ -61,8 +88,15 @@ fn ray_color(ray: &Ray, world: &dyn Hittable, depth: i32) -> Color {
     }
 
     if world.hit(ray, 0.001, f64::INFINITY, &mut rec) {
-        let target = rec.p + vec3::random_in_hemisphere(&rec.normal);
-        return 0.5 * ray_color(&Ray::new(&rec.p, &(target - rec.p)), world, depth - 1);
+        let mut scattered = Ray::new0();
+        let mut attenuation = color![];
+        if rec.mat_ptr.is_some() {
+            let mat_ptr = rec.mat_ptr.as_ref().unwrap().borrow();
+            if mat_ptr.scatter(ray, &rec, &mut attenuation, &mut scattered) {
+                return attenuation * ray_color(&scattered, world, depth - 1);
+            }
+        }
+        return color![];
     }
     let unit_direction = Point3::unit_vector(&ray.direction);
     let t = 0.5 * (unit_direction.y + 1.0);

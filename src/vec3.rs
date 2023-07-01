@@ -66,29 +66,15 @@ impl Vec3 {
     pub fn unit_vector(&self) -> Vec3 {
         *self / self.length()
     }
-}
 
-pub fn random_in_unit_sphere() -> Vec3 {
-    loop {
-        let p = Vec3::random_range(-1.0, 1.0);
-        if p.length_squared() >= 1.0 {
-            continue;
-        }
-        return p;
+    /// Return true if the vector is close to zero in all dimensions.
+    pub fn near_zero(&self) -> bool {
+        let s = 1e-8;
+        self.x.abs() < s && self.y.abs() < s && self.z.abs() < s
     }
-}
 
-pub fn random_unit_vector() -> Vec3 {
-    random_in_unit_sphere().unit_vector()
-}
-
-pub fn random_in_hemisphere(normal: &Vec3) -> Vec3 {
-    let in_unit_sphere = random_in_unit_sphere();
-    if in_unit_sphere.dot(normal) > 0.0 {
-        // In the same hemisphere as the normal
-        in_unit_sphere
-    } else {
-        -in_unit_sphere
+    pub fn reflect(&self, n: &Vec3) -> Vec3 {
+        *self - 2.0 * self.dot(n) * n
     }
 }
 
@@ -224,6 +210,18 @@ impl Mul<Vec3> for f64 {
     type Output = Vec3;
 
     fn mul(self, rhs: Vec3) -> Self::Output {
+        Vec3 {
+            x: self * rhs.x,
+            y: self * rhs.y,
+            z: self * rhs.z,
+        }
+    }
+}
+
+impl Mul<&Vec3> for f64 {
+    type Output = Vec3;
+
+    fn mul(self, rhs: &Vec3) -> Self::Output {
         Vec3 {
             x: self * rhs.x,
             y: self * rhs.y,

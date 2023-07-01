@@ -4,7 +4,7 @@ use crate::{point3, vec3, Point3, Vec3};
 use std::cell::RefCell;
 use std::rc::Rc;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Clone)]
 pub struct HitRecord {
     pub p: Point3,
     pub normal: Vec3,

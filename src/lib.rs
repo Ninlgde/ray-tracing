@@ -3,7 +3,7 @@ pub mod color;
 mod hittable;
 mod hittable_list;
 mod macros;
-mod material;
+pub mod material;
 pub mod ray;
 pub mod rtweekend;
 mod sphere;
