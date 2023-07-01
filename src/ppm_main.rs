@@ -13,8 +13,8 @@ fn main() {
     const ASPECT_RATIO: f64 = 16.0 / 9.0;
     const IMAGE_WIDTH: usize = 400;
     const IMAGE_HEIGHT: usize = (IMAGE_WIDTH as f64 / ASPECT_RATIO) as usize;
-    const SAMPLES_PER_PIXEL: usize = 10;
-    const MAX_DEPTH: i32 = 5;
+    const SAMPLES_PER_PIXEL: usize = 100;
+    const MAX_DEPTH: i32 = 50;
 
     // World
     let mut world = HittableList::new();
@@ -61,7 +61,7 @@ fn ray_color(ray: &Ray, world: &dyn Hittable, depth: i32) -> Color {
     }
 
     if world.hit(ray, 0.001, f64::INFINITY, &mut rec) {
-        let target = rec.p + rec.normal + vec3::random_in_unit_sphere();
+        let target = rec.p + rec.normal + vec3::random_unit_vector();
         return 0.5 * ray_color(&Ray::new(&rec.p, &(target - rec.p)), world, depth - 1);
     }
     let unit_direction = Point3::unit_vector(&ray.direction);
