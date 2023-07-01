@@ -1,0 +1,21 @@
+# rust 生成文件
+/target
+Cargo.lock
+
+# 日志文件
+# *表示当前路径下的任意字符
+*.log
+
+# ppm图片
+*.ppm
+
+# CMake生成的文件目录
+build/
+
+# IDE相关文件夹
+.cache/
+.vscode/
+.idea/
+
+# mac 相关文件
+.DS_Store
