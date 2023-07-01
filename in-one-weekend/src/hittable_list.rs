@@ -1,5 +1,5 @@
-use crate::hittable::{HitRecord, Hittable};
-use crate::ray::Ray;
+use crate::{HitRecord, Hittable};
+use common::ray::Ray;
 use std::cell::RefCell;
 use std::rc::Rc;
 

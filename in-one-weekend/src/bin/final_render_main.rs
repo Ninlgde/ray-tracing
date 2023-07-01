@@ -1,10 +1,9 @@
-use ray_tracing::color::write_color;
-use ray_tracing::material::{Dielectric, Lambertian, Metal};
-use ray_tracing::ray::Ray;
-use ray_tracing::rtweekend::{random_double, random_double_range};
-use ray_tracing::{
-    color, point3, vec3, Camera, Color, HitRecord, Hittable, HittableList, Material, Point3, Sphere,
-};
+use common::color::write_color;
+use common::ray::Ray;
+use common::rtweekend::{random_double, random_double_range};
+use common::{color, point3, vec3, Camera, Color};
+use in_one_weekend::material::{Dielectric, Lambertian, Metal};
+use in_one_weekend::{HitRecord, Hittable, HittableList, Material, Sphere};
 use std::cell::RefCell;
 use std::io::{stdout, Write};
 use std::rc::Rc;
@@ -12,10 +11,10 @@ use std::rc::Rc;
 fn main() {
     // Image
     const ASPECT_RATIO: f64 = 3.0 / 2.0;
-    const IMAGE_WIDTH: usize = 1200;
+    const IMAGE_WIDTH: usize = 800;
     const IMAGE_HEIGHT: usize = (IMAGE_WIDTH as f64 / ASPECT_RATIO) as usize;
-    const SAMPLES_PER_PIXEL: usize = 500;
-    const MAX_DEPTH: i32 = 50;
+    const SAMPLES_PER_PIXEL: usize = 30;
+    const MAX_DEPTH: i32 = 10;
 
     // World
     let world = random_scene();
@@ -67,7 +66,7 @@ fn ray_color(ray: &Ray, world: &dyn Hittable, depth: i32) -> Color {
         }
         return color![];
     }
-    let unit_direction = Point3::unit_vector(&ray.direction);
+    let unit_direction = ray.direction.unit_vector();
     let t = 0.5 * (unit_direction.y + 1.0);
     color![1.0, 1.0, 1.0] * (1.0 - t) + color![0.5, 0.7, 1.0] * t
 }

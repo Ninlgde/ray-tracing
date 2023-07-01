@@ -1,6 +1,7 @@
 use crate::ray::Ray;
 use crate::rtweekend::{degrees_to_radians, random_in_unit_disk};
-use crate::{Point3, Vec3};
+use crate::vec3::Vec3;
+use crate::Point3;
 
 pub struct Camera {
     pub origin: Point3,

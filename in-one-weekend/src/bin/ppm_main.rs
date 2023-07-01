@@ -1,10 +1,9 @@
-use ray_tracing::color::write_color;
-use ray_tracing::material::{Dielectric, Lambertian, Metal};
-use ray_tracing::ray::Ray;
-use ray_tracing::rtweekend::random_double;
-use ray_tracing::{
-    color, point3, vec3, Camera, Color, HitRecord, Hittable, HittableList, Point3, Sphere,
-};
+use common::color::write_color;
+use common::ray::Ray;
+use common::rtweekend::random_double;
+use common::{color, point3, vec3, Camera, Color};
+use in_one_weekend::material::{Dielectric, Lambertian, Metal};
+use in_one_weekend::{HitRecord, Hittable, HittableList, Sphere};
 use std::cell::RefCell;
 use std::io::{stdout, Write};
 use std::rc::Rc;
@@ -114,7 +113,7 @@ fn ray_color(ray: &Ray, world: &dyn Hittable, depth: i32) -> Color {
         }
         return color![];
     }
-    let unit_direction = Point3::unit_vector(&ray.direction);
+    let unit_direction = ray.direction.unit_vector();
     let t = 0.5 * (unit_direction.y + 1.0);
     color![1.0, 1.0, 1.0] * (1.0 - t) + color![0.5, 0.7, 1.0] * t
 }

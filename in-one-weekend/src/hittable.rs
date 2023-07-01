@@ -1,6 +1,6 @@
-use crate::material::Material;
-use crate::ray::Ray;
-use crate::{point3, vec3, Point3, Vec3};
+use crate::Material;
+use common::ray::Ray;
+use common::{point3, vec3, Point3, Vec3};
 use std::cell::RefCell;
 use std::rc::Rc;
 

@@ -1,17 +1,5 @@
-[package]
-name = "ray-tracing"
-version = "0.1.0"
-edition = "2021"
-
-[[bin]]
-name = "ppm_main"
-path = "src/ppm_main.rs"
-
-[[bin]]
-name = "final_render"
-path = "src/final_render_main.rs"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-rand = "0.8.5"
+[workspace]
+members = [
+    "common",
+    "in-one-weekend",
+]

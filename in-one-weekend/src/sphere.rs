@@ -1,6 +1,6 @@
-use crate::hittable::{HitRecord, Hittable};
-use crate::ray::Ray;
-use crate::{Material, Point3};
+use crate::{HitRecord, Hittable, Material};
+use common::ray::Ray;
+use common::Point3;
 use std::cell::RefCell;
 use std::rc::Rc;
 

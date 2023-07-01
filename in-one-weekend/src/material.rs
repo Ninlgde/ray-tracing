@@ -1,6 +1,7 @@
-use crate::ray::Ray;
-use crate::rtweekend::{random_double, random_in_unit_sphere, random_unit_vector};
-use crate::{color, vec3, Color, HitRecord};
+use crate::HitRecord;
+use common::ray::Ray;
+use common::rtweekend::{random_double, random_in_unit_sphere, random_unit_vector};
+use common::{color, vec3, Color};
 
 pub trait Material {
     fn scatter(
