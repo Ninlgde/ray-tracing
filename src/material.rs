@@ -1,5 +1,5 @@
 use crate::ray::Ray;
-use crate::rtweekend::random_unit_vector;
+use crate::rtweekend::{random_in_unit_sphere, random_unit_vector};
 use crate::{Color, HitRecord};
 
 pub trait Material {
@@ -51,15 +51,17 @@ impl Material for Lambertian {
 
 pub struct Metal {
     pub albedo: Color,
+    pub fuzz: f64,
 }
 
 impl Metal {
-    pub fn new(albedo: &Color) -> Self
+    pub fn new(albedo: &Color, f: f64) -> Self
     where
         Self: Sized,
     {
         Metal {
             albedo: albedo.clone(),
+            fuzz: if f < 1.0 { f } else { 1.0 },
         }
     }
 }
@@ -73,7 +75,7 @@ impl Material for Metal {
         scattered: &mut Ray,
     ) -> bool {
         let reflected = r_in.direction.unit_vector().reflect(&rec.normal);
-        *scattered = Ray::new(&rec.p, &reflected);
+        *scattered = Ray::new(&rec.p, &(reflected + self.fuzz * random_in_unit_sphere()));
         *attenuation = self.albedo;
 
         scattered.direction.dot(&rec.normal) > 0.0
