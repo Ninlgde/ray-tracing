@@ -9,6 +9,9 @@ Cargo.lock
 
 # ppm图片
 *.ppm
+# png图片
+*.png
+/output
 
 # CMake生成的文件目录
 build/
